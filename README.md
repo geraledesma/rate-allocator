@@ -56,9 +56,16 @@ pip install -e ".[streamlit]"
 streamlit run streamlit_app.py
 ```
 
-Deploy the repo to [Streamlit Community Cloud](https://streamlit.io/cloud) with primary file `streamlit_app.py` and root `requirements.txt`. After the first deploy, add your public app URL in this README under **Live demo**.
+**Source repository:** [github.com/geraledesma/rate-allocator](https://github.com/geraledesma/rate-allocator)
 
-**Live demo:** *(add your Streamlit Cloud URL here)*
+### Publish on Streamlit Community Cloud (one-time)
+
+1. Open [Streamlit Community Cloud](https://streamlit.io/cloud) and sign in with GitHub.
+2. **New app** → pick repository **`geraledesma/rate-allocator`**, branch **`main`**, main file **`streamlit_app.py`**.
+3. Leave **App URL** as default or customize; wait for the build to finish (uses root [`requirements.txt`](requirements.txt)).
+4. Copy the public app URL from the Cloud dashboard and replace the line below (then commit and push this README).
+
+**Live demo:** *(paste your `https://….streamlit.app` URL here after deploy)*
 
 ## Running Tests
 
