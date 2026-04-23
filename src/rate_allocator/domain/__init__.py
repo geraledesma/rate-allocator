@@ -1,4 +1,4 @@
-"""Backward-compatible exports for domain models."""
+"""Domain entities and value objects for rate allocation."""
 
 from rate_allocator.domain.models import (
     AllocationResult,

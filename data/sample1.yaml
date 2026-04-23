@@ -1,0 +1,50 @@
+# Tier rates are overnight-annualized nominal yields (use periods_per_year=365
+# with allocate() kwargs `periods_per_year` and `horizon_years` for daily-style compounding).
+institutions:
+  - name: cetes28
+    institution_type: none
+    tiers:
+      - limit: inf
+        rate: 0.0655
+  - name: Nu
+    institution_type: sofipo
+    tiers:
+      - limit: 25_000
+        rate: 0.13
+        constraints:
+          - type: monthly_expense
+            cost: 1.0
+            benefit: high_rate_tier
+            condition_value: 1.0
+            active: true
+      - limit: inf
+        rate: 0.0675
+  - name: OpenBank
+    institution_type: banco
+    tiers:
+      - limit: 40_000
+        rate: 0.13
+      - limit: 1_000_000
+        rate: 0.073
+      - limit: inf
+        rate: 0.07
+  - name: PlataAhorroPlus
+    institution_type: banco
+    tiers:
+      - limit: inf
+        rate: 0.12
+        constraints:
+          - type: monthly_expense
+            cost: 114.84 # 99 + IVA
+            benefit: membership_plan
+            active: true
+  - name: Mifel
+    institution_type: banco
+    tiers:
+      - limit: 100
+        rate: 0.0 # Required unlock tranche
+      - limit: 500_000
+        rate: 0.10
+      - limit: inf
+        rate: 0.0
+

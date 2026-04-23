@@ -1,0 +1,13 @@
+country: MX
+effective_from: 2026-01-01
+
+insurance:
+  bank_insurance_limit_mxn: 3_300_000 # IPAB: 400_000 UDIS
+  sofipo_insurance_limit_mxn: 208_000 # Prosofipo: 25_000 UDIS
+
+tax:
+  bank_isr_withholding_rate_annual: 0.009 # 2026 withholding rate
+  real_interest_isr_rate_annual: 0.009 # Estimated annual ISR over real interest
+  inflation_proxy_annual: 0.0421 # Banxico inflation proxy (Dec-2026 survey)
+  sofipo_exempt_balance_limit_mxn: 213_973 # 5 UMAs exempt from ISR
+  sofipo_excess_isr_rate_annual: 0.009 # ISR rate for excess balance

@@ -47,6 +47,19 @@ print(f"Effective rate: {result.effective_rate:.2%}")
 pip install -e .
 ```
 
+## Interactive demo (Streamlit)
+
+Same logic as `notebooks/demo_ipywidgets.ipynb`: bundled `data/sample1.yaml`, institution multiselect, total and **horizon** sliders, HTML report with charts.
+
+```bash
+pip install -e ".[streamlit]"
+streamlit run streamlit_app.py
+```
+
+Deploy the repo to [Streamlit Community Cloud](https://streamlit.io/cloud) with primary file `streamlit_app.py` and root `requirements.txt`. After the first deploy, add your public app URL in this README under **Live demo**.
+
+**Live demo:** *(add your Streamlit Cloud URL here)*
+
 ## Running Tests
 
 ```bash
@@ -64,3 +77,15 @@ The allocator uses linear programming (scipy.optimize.linprog) with:
   - Monotonicity: Sequential tier filling
 
 See `docs/assumptions.md` for detailed model specifications.
+
+## Notebook And HTTP Readiness
+
+The notebook UI now delegates result rendering to `rate_allocator.workflows.interactive_report`.
+That workflow takes `AllocationResult + institutions + total` and returns an HTML fragment that
+contains summary, tranche table, fee notes, and chart images.
+
+This separation makes HTTP mounting feasible without notebook-specific code:
+
+- **Streamlit:** `streamlit_app.py` calls `allocate` and `build_interactive_report_html` (see above).
+- API route: compute `allocate(...)`, then return JSON plus optional report HTML.
+- Server-rendered page: compute `allocate(...)`, then inject report HTML in a template.

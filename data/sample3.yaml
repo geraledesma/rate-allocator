@@ -1,0 +1,237 @@
+# Vista (overnight) tier rates: annual nominal % from source, stored as decimals for allocate().
+# periods_per_year=365 with horizon_years matches daily-style compounding used elsewhere in this repo.
+# Canonical path in this repo: data/sample3.yaml (this file; regenerate with scripts/generate_decero_vista_sample.py).
+#
+# WORK IN PROGRESS — auto-sourced from a third-party JSON feed and heuristically mapped to tiers. Not audited
+# for production. Do not treat as a source of truth until you finish review and curation.
+# Once you have a finalized institutions file, stop using this snapshot and load your confirmed YAML instead.
+#
+# Source: https://deceroalinfinito.com/data/inversiones.json
+# Snapshot (UTC): 2026-04-23T22:29:36Z
+#
+# Mifel (cuenta digital): min $100 / max $500k for interest → three tiers like data/sample1.yaml Mifel.
+# Openbank / Revolut: explicit three-band copy in notas.Vista (rates from De Cero; Revolut middle = avg 7–7.5%).
+# Two-band "topada … / Montos mayores ofrecen …" (NU, Didi, …): sample1 Nu–shaped split; rates from the note.
+# Other institutions: single headline Vista tier plus disclosures unless you extend parsers.
+#
+# Footnotes: we merge notas.Vista plus other string notas (nombre, Condiciones, plazo keys like "12 meses")
+# into one inactive disclosure — De Cero often puts Vista-only text in notas.Vista but leaves related copy
+# in other keys (same gap class as Plata Plus fee living under notas.nombre).
+# Exception: notas.nombre matching $99+IVA mensualidad becomes monthly_expense 114.84 (see sample1.yaml);
+# that sentence is omitted from the disclosure blob to avoid triplication (it stays on the fee row).
+# Headline plazos.Vista still drives the tier rate; footnotes do not add tier splits unless you edit YAML.
+
+institutions:
+  - name: "Capital ACTIVO"
+    institution_type: sofipo
+    tiers:
+      - limit: inf
+        rate: 0.015
+  - name: "Cuenta now"
+    institution_type: banco
+    tiers:
+      - limit: inf
+        rate: 0.0725
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "¡Sin límites! Desde $50 MXN"
+            benefit_condition: "¡Sin límites! Desde $50 MXN"
+  - name: "Didi Cuenta"
+    institution_type: sofipo
+    tiers:
+      - limit: 10_000
+        rate: 0.15
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Tasa del 15% topada hasta $10,000 MXN. Montos mayores ofrecen 7.5% de rendimiento."
+            benefit_condition: "Tasa del 15% topada hasta $10,000 MXN. Montos mayores ofrecen 7.5% de rendimiento."
+      - limit: inf
+        rate: 0.075
+  - name: "FINABIEN"
+    institution_type: none
+    tiers:
+      - limit: inf
+        rate: 0.1
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Tasa del 10% disponible al ingresar tu dinero a la bóveda virtual, los rendimientos se depositan el 1° de cada mes. Existen topes máximos para ingresar a tu cuenta de forma mensual. Consulta su sitio oficial para más información."
+            benefit_condition: "Tasa del 10% disponible al ingresar tu dinero a la bóveda virtual, los rendimientos se depositan el 1° de cada mes. Existen topes máximos para ingresar a tu cuenta de forma mensual. Consulta su sitio oficial para más información."
+  - name: "Finsus"
+    institution_type: sofipo
+    tiers:
+      - limit: inf
+        rate: 0.0708
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Los rendimientos de los apartados finsus+ (a la vista) se depositan de forma mensual."
+            benefit_condition: "Los rendimientos de los apartados finsus+ (a la vista) se depositan de forma mensual."
+  - name: "GBM Smart Cash"
+    institution_type: none
+    tiers:
+      - limit: inf
+        rate: 0.0425
+  - name: "Klar"
+    institution_type: sofipo
+    tiers:
+      - limit: inf
+        rate: 0.03
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "En inversión flexible obtienes una tasa del 6% anual."
+            benefit_condition: "En inversión flexible obtienes una tasa del 6% anual."
+  - name: "Klar Plus y Platino"
+    institution_type: sofipo
+    tiers:
+      - limit: inf
+        rate: 0.15
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Tasa del 15% topada hasta $15,000 MXN. En inversión flexible obtienes una tasa del 8% anual. Obtienes 5% de rendimiento en tu cuenta a la vista."
+            benefit_condition: "Tasa del 15% topada hasta $15,000 MXN. En inversión flexible obtienes una tasa del 8% anual. Obtienes 5% de rendimiento en tu cuenta a la vista."
+  - name: "Mercado Pago"
+    institution_type: none
+    tiers:
+      - limit: inf
+        rate: 0.13
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Tasa del 13% disponible al ingresar $3,000MXN al mes y topada hasta $25,000 MXN. Montos mayores no ofrecen rendimientos. 5.9% en otro caso, hasta $25,000 MXN."
+            benefit_condition: "Tasa del 13% disponible al ingresar $3,000MXN al mes y topada hasta $25,000 MXN. Montos mayores no ofrecen rendimientos. 5.9% en otro caso, hasta $25,000 MXN."
+  - name: "Mifel (cuenta digital)"
+    institution_type: banco
+    tiers:
+      - limit: 100
+        rate: 0.0  # Required unlock tranche
+      - limit: 500_000
+        rate: 0.1
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "El monto máximo para recibir intereses es de $500,000 MXN y el monto mínimo es de $100 MXN."
+            benefit_condition: "El monto máximo para recibir intereses es de $500,000 MXN y el monto mínimo es de $100 MXN."
+      - limit: inf
+        rate: 0.0
+  - name: "NU"
+    institution_type: sofipo
+    tiers:
+      - limit: 25_000
+        rate: 0.13
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Tasa del 13% se activa (Cajita Turbo) al realizar una compra al mes y topada hasta $25,000 MXN. Montos mayores ofrecen 6.75% de rendimiento a la vista."
+            benefit_condition: "Tasa del 13% se activa (Cajita Turbo) al realizar una compra al mes y topada hasta $25,000 MXN. Montos mayores ofrecen 6.75% de rendimiento a la vista."
+      - limit: inf
+        rate: 0.0675
+  - name: "Openbank"
+    institution_type: banco
+    tiers:
+      - limit: 40_000
+        rate: 0.13
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Tasa del 13% topada hasta $40,000 MXN. De $40,000 a $1,000,000 tasa de rendimiento del 7.3% y 7% para montos mayores a $1,000,000."
+            benefit_condition: "Tasa del 13% topada hasta $40,000 MXN. De $40,000 a $1,000,000 tasa de rendimiento del 7.3% y 7% para montos mayores a $1,000,000."
+      - limit: 1_000_000
+        rate: 0.073
+      - limit: inf
+        rate: 0.07
+  - name: "Plata Ahorro"
+    institution_type: banco
+    tiers:
+      - limit: inf
+        rate: 0.07
+  - name: "Plata Ahorro Plus (+)"
+    institution_type: banco
+    tiers:
+      - limit: inf
+        rate: 0.12
+        constraints:
+          - type: monthly_expense
+            cost: 114.84  # 99 + IVA (16%)
+            benefit: membership_plan
+            active: true
+            constraint_condition: "Pagando la mensualidad de $99 MXN + IVA"
+            benefit_condition: "Pagando la mensualidad de $99 MXN + IVA"
+  - name: "Premo"
+    institution_type: sofipo
+    tiers:
+      - limit: inf
+        rate: 0.04
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Rendimientos calculados con un monto de inversión de $100 MXN"
+            benefit_condition: "Rendimientos calculados con un monto de inversión de $100 MXN"
+  - name: "PROGRESSA"
+    institution_type: sofipo
+    tiers:
+      - limit: inf
+        rate: 0.01
+  - name: "Revolut"
+    institution_type: banco
+    tiers:
+      - limit: 25_000
+        rate: 0.15
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Tasa del 15% topada hasta $25,000 MXN. De $25,000 a $1,000,000 hay tasas entre el 7% y 7.5% de rendimiento, dependiendo el plan y 5% para montos mayores."
+            benefit_condition: "Tasa del 15% topada hasta $25,000 MXN. De $25,000 a $1,000,000 hay tasas entre el 7% y 7.5% de rendimiento, dependiendo el plan y 5% para montos mayores."
+      - limit: 1_000_000
+        rate: 0.0725
+      - limit: inf
+        rate: 0.05
+  - name: "Stori"
+    institution_type: sofipo
+    tiers:
+      - limit: inf
+        rate: 0.0677
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Se muestra la tasa nominal para una comparación justa con los demás instrumentos.\n\nExiste una tasa del 14.14% (15% GAT) topada hasta $5,000 MXN y por tiempo limitado a 60 días. Revisar condiciones en su página oficial."
+            benefit_condition: "Se muestra la tasa nominal para una comparación justa con los demás instrumentos.\n\nExiste una tasa del 14.14% (15% GAT) topada hasta $5,000 MXN y por tiempo limitado a 60 días. Revisar condiciones en su página oficial."
+  - name: "SuperTasas"
+    institution_type: sofipo
+    tiers:
+      - limit: inf
+        rate: 0.069
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "El rendimiento mostrado de 364 días es al recibir los intereses al final del plazo. Se pueden recibir intereses cada 28 días con una tasa menor."
+            benefit_condition: "El rendimiento mostrado de 364 días es al recibir los intereses al final del plazo. Se pueden recibir intereses cada 28 días con una tasa menor."
+  - name: "Ualá"
+    institution_type: banco
+    tiers:
+      - limit: inf
+        rate: 0.15
+        constraints:
+          - type: disclosure
+            cost: 0
+            active: false
+            constraint_condition: "Si consumes $6,000 o traes tu nómina por $6,000, tu tasa sube a 15% hasta que termine el mes. Si consumes $3,000 en el mes o traes tu nómina por $3,000 tu tasa será del 12% anual hasta que termine el mes. En otro caso, la tasa de rendimiento es del 6.75% anual. Todas las tasas están topadas hasta $30,000 MXN."
+            benefit_condition: "Si consumes $6,000 o traes tu nómina por $6,000, tu tasa sube a 15% hasta que termine el mes. Si consumes $3,000 en el mes o traes tu nómina por $3,000 tu tasa será del 12% anual hasta que termine el mes. En otro caso, la tasa de rendimiento es del 6.75% anual. Todas las tasas están topadas hasta $30,000 MXN."

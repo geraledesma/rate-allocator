@@ -1,29 +1,36 @@
-# Rate Allocator - Start Here
+# Rate Allocator — start here
 
-You have a **working allocator** ready to test and develop!
+Modular Python package for tiered cash allocation (LP via SciPy).
 
-## 📁 Location
-```
-/Users/gera.ledesma/Desktop/Projects/rate-allocator
-```
+## Clone and enter the repo
 
-## 🚀 Quick Start (Choose One)
-
-### Option A: Test with Jupyter Notebook (Recommended for Exploration)
 ```bash
-cd /Users/gera.ledesma/Desktop/Projects/rate-allocator
+git clone <your-repo-url> rate-allocator
+cd rate-allocator
+```
+
+## Quick start
+
+### Option A — Streamlit demo (browser)
+
+```bash
+pip install -e ".[streamlit]"
+streamlit run streamlit_app.py
+```
+
+### Option B — Jupyter notebook
+
+```bash
+pip install -e ".[notebook]"
 jupyter notebook notebooks/demo.ipynb
 ```
 
-The notebook has 6 ready-to-run scenarios + an interactive test cell.
+Interactive widgets demo: `notebooks/demo_ipywidgets.ipynb` (restart kernel and run all).
 
-See `NOTEBOOK_GUIDE.md` for details.
+### Option C — Python REPL
 
----
-
-### Option B: Quick Python Test
 ```bash
-cd /Users/gera.ledesma/Desktop/Projects/rate-allocator
+pip install -e .
 python3 << 'PYTHON'
 from rate_allocator import allocate, Institution, Tier
 
@@ -44,80 +51,36 @@ print(f"Return: ${result.expected_return:,.2f}")
 PYTHON
 ```
 
----
+### Option D — Tests
 
-### Option C: Run Tests
 ```bash
-cd /Users/gera.ledesma/Desktop/Projects/rate-allocator
+pip install -e ".[dev]"
 pytest tests/ -v
 ```
 
-All 11 tests pass. ✅
-
----
-
-## 📚 What's Where
+## Project layout
 
 | Path | Purpose |
 |------|---------|
-| `src/rate_allocator/` | Core allocator code (212 lines) |
-| `tests/test_allocator.py` | 11 comprehensive tests |
-| `notebooks/demo.ipynb` | Interactive demo (6 scenarios) |
-| `data/sample_institutions.json` | Test data (3 real-like SOFIPOs) |
-| `docs/assumptions.md` | Model details & assumptions |
+| `src/rate_allocator/domain/` | Entities (`Institution`, `Tier`, `Constraint`, `AllocationResult`) |
+| `src/rate_allocator/adapters/` | YAML loaders |
+| `src/rate_allocator/core/finance/` | Rates, costs, taxes |
+| `src/rate_allocator/core/optimizer/` | `allocate()` |
+| `src/rate_allocator/reporting/` | Summaries and plots |
+| `src/rate_allocator/workflows/` | `summarize_and_plot`, `build_interactive_report_html` |
+| `data/*.yaml` | Example institutions and regulatory defaults |
+| `streamlit_app.py` | Public demo entrypoint |
 
----
+## Recommended reading order
 
-## 🎯 What You Can Do Now
+1. `src/rate_allocator/domain/models.py`
+2. `src/rate_allocator/core/finance/rates.py`
+3. `src/rate_allocator/core/finance/costs.py`
+4. `src/rate_allocator/core/optimizer/solve.py`
+5. `src/rate_allocator/reporting/summary.py`
+6. `src/rate_allocator/workflows/analysis.py`
 
-- ✅ Test different allocation amounts
-- ✅ See how tiers affect the effective rate
-- ✅ Define custom institution structures
-- ✅ Run the full test suite
-- ✅ Explore the code (it's minimal and clear!)
+## Notes
 
----
-
-## 📖 Documentation
-
-- **README.md** - Project overview
-- **docs/assumptions.md** - Model assumptions & design decisions
-- **NOTEBOOK_GUIDE.md** - How to use the demo notebook
-- **READY.md** - Feature overview
-
----
-
-## 💡 Next Steps
-
-1. **Run the notebook** to explore scenarios
-2. **Modify test amounts** in the interactive cell
-3. **Create your own institutions** (Scenario 5)
-4. **Read the code** - it's written to be clear!
-5. **Suggest features** for the next version
-
----
-
-## 🔧 Development
-
-### Edit the allocator:
-```
-src/rate_allocator/allocator.py  (167 lines)
-```
-
-### Add tests:
-```
-tests/test_allocator.py  (11 tests so far)
-```
-
-### All changes auto-tested:
-```bash
-pytest tests/ --watch  # if you have pytest-watch installed
-```
-
----
-
-## ❓ Questions?
-
-The code is minimal and focused. Start with the notebook, then explore the source code - it's designed to be readable.
-
-**Ready? Start with the notebook!** 🚀
+- Legacy modules (`rate_allocator.io`, `rate_allocator.summary`, `rate_allocator.models`, `rate_allocator.allocator`) are compatibility shims.
+- Prefer the paths above for ongoing development.
