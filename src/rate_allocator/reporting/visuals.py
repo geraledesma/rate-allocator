@@ -15,6 +15,11 @@ def plot_net_interest_by_tranche_stacked(
     *,
     horizon_years: float = 1.0,
     regulatory_rules: RegulatoryRules | None = None,
+    title: str | None = None,
+    ylabel: str | None = None,
+    gross_bar_label: str | None = None,
+    fees_bar_label: str | None = None,
+    empty_text: str | None = None,
 ) -> None:
     """Plot per-tranche gross interest and annualized cost bars."""
     labels, gross_vals, annualized_costs = _tranche_plot_vectors(
@@ -24,9 +29,18 @@ def plot_net_interest_by_tranche_stacked(
         regulatory_rules or RegulatoryRules(),
     )
     if not labels:
-        _render_empty_tranche_plot(ax)
+        _render_empty_tranche_plot(ax, title=title, empty_text=empty_text)
         return
-    _render_tranche_bars(ax, labels, gross_vals, annualized_costs)
+    _render_tranche_bars(
+        ax,
+        labels,
+        gross_vals,
+        annualized_costs,
+        title=title,
+        ylabel=ylabel,
+        gross_bar_label=gross_bar_label,
+        fees_bar_label=fees_bar_label,
+    )
 
 
 def _tranche_plot_vectors(
@@ -70,12 +84,17 @@ def _tranche_plot_vectors(
     return labels, gross_vals, annualized_costs
 
 
-def _render_empty_tranche_plot(ax) -> None:
-    ax.set_title("Net interest by tranche (MXN/yr)")
+def _render_empty_tranche_plot(
+    ax,
+    *,
+    title: str | None = None,
+    empty_text: str | None = None,
+) -> None:
+    ax.set_title(title or "Net interest by tranche (MXN/yr)")
     ax.text(
         0.5,
         0.5,
-        "No funded tranches",
+        empty_text or "No funded tranches",
         ha="center",
         va="center",
         transform=ax.transAxes,
@@ -87,6 +106,11 @@ def _render_tranche_bars(
     labels: list[str],
     gross_vals: list[float],
     annualized_costs: list[float],
+    *,
+    title: str | None = None,
+    ylabel: str | None = None,
+    gross_bar_label: str | None = None,
+    fees_bar_label: str | None = None,
 ) -> None:
     x = np.arange(len(labels), dtype=float)
     bar_width = 0.38
@@ -95,20 +119,20 @@ def _render_tranche_bars(
         x - offset,
         gross_vals,
         width=bar_width,
-        label="Gross interest (simple annual)",
+        label=gross_bar_label or "Gross interest (simple annual)",
         color="#2ecc71",
     )
     ax.bar(
         x + offset,
         [-cost for cost in annualized_costs],
         width=bar_width,
-        label="Fees + taxes (annualized)",
+        label=fees_bar_label or "Fees + taxes (annualized)",
         color="#e74c3c",
     )
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=45, ha="right")
-    ax.set_title("Net interest by tranche (MXN/yr)")
-    ax.set_ylabel("MXN/yr")
+    ax.set_title(title or "Net interest by tranche (MXN/yr)")
+    ax.set_ylabel(ylabel or "MXN/yr")
     ax.axhline(0.0, color="gray", linewidth=0.5)
     ax.grid(axis="y", alpha=0.3)
     ax.legend(loc="upper right", fontsize=8)

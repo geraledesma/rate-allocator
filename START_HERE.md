@@ -25,7 +25,7 @@ pip install -e ".[notebook]"
 jupyter notebook notebooks/demo.ipynb
 ```
 
-Interactive widgets demo: `notebooks/demo_ipywidgets.ipynb` (restart kernel and run all).
+Interactive widgets demos: `notebooks/demo_ipywidgets_en.ipynb` and `notebooks/demo_ipywidgets_es.ipynb` (restart kernel and run all). The hosted Streamlit app mirrors the Spanish notebook: **Spanish** UI and report (`demo_ipywidgets_es.ipynb`).
 
 ### Option C — Python REPL
 

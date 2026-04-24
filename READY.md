@@ -34,7 +34,7 @@ src/rate_allocator/
 ## Data and examples
 
 - `data/sample1.yaml`, `sample2.yaml`, `sample3.yaml`, `regulatory_rules.mx.yaml`
-- `notebooks/demo.ipynb`, `notebooks/demo_ipywidgets.ipynb`
+- `notebooks/demo.ipynb`, `notebooks/demo_ipywidgets_en.ipynb`, `notebooks/demo_ipywidgets_es.ipynb`
 - `streamlit_app.py` — browser demo (Streamlit Community Cloud–ready)
 
 ## Quick commands
